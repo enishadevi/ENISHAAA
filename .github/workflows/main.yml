@@ -5,20 +5,14 @@ on:
     branches: [ main ]  # Only runs when code is pushed to main
 
 jobs:
-  deploy-job:
+  deploy:
     runs-on: ubuntu-latest
-    # This 'environment' name must match the name you just created
-    environment: production 
-    
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Use Secrets and Variables
-        run: |
-          echo "Connecting to: ${{ vars.API_URL }}"
-          # The secret is masked in logs automatically
-          echo "Using Token: ${{ secrets.API_TOKEN }}" 
+      - name: Use the new secret
+        env:
+          # Update the name here if you changed it in GitHub Settings
+          MY_APP_TOKEN: ${{ secrets.YOUR_NEW_SECRET_NAME }}
+        run: ./deploy.sh
         env:
           # Mapping them to local env variables for scripts to use
           API_URL: ${{ vars.API_URL }}
